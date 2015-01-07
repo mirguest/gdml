@@ -5,6 +5,3 @@ use DetSimPolicy    v*  Simulation/DetSimV2
 use G4Svc           v*  Simulation/DetSimV2
 
 library G4persistency *.cc
-
-apply_pattern linker_library library=G4persistency
-

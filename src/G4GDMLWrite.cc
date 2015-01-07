@@ -104,25 +104,24 @@ G4String G4GDMLWrite::GenerateName(const G4String& name, const void* const ptr)
 xercesc::DOMAttr* G4GDMLWrite::NewAttribute(const G4String& name,
                                             const G4String& value)
 {
-   xercesc::XMLString::transcode(name,tempStr,9999);
-   xercesc::DOMAttr* att = doc->createAttribute(tempStr);
-   xercesc::XMLString::transcode(value,tempStr,9999);
-   att->setValue(tempStr);
+   XMLCh* tmpstr = xercesc::XMLString::transcode(name);
+   xercesc::DOMAttr* att = doc->createAttribute(tmpstr);
+   xercesc::XMLString::release(&tmpstr);
+
+   tmpstr = xercesc::XMLString::transcode(value);
+   att->setValue(tmpstr);
+   xercesc::XMLString::release(&tmpstr);
    return att;
 }
 
 xercesc::DOMAttr* G4GDMLWrite::NewAttribute(const G4String& name,
                                             const G4double& value)
 {
-   xercesc::XMLString::transcode(name,tempStr,9999);
-   xercesc::DOMAttr* att = doc->createAttribute(tempStr);
    std::ostringstream ostream;
    ostream.precision(15);
    ostream << value;
    G4String str = ostream.str();
-   xercesc::XMLString::transcode(str,tempStr,9999);
-   att->setValue(tempStr);
-   return att;
+   return NewAttribute(name, str);
 }
 
 xercesc::DOMElement* G4GDMLWrite::NewElement(const G4String& name)
